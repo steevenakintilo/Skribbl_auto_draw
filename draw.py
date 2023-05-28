@@ -4,6 +4,9 @@ import pyautogui, sys
 import time
 import requests
 import numpy as np
+import keyboard
+from typing import Dict, Callable
+import math
 
 SIZE = 150
 
@@ -66,21 +69,22 @@ class Kolor:
     color_list_name = ["white","black","grey","dark_grey","red","dark_red","orange","dark_orange","yellow","dark_yellow","green","dark_green","blue","dark_blue","big_blue","dark_big_blue","purple","dark_purple","pink","dark_pink","brown","dark_brown"]
 
 
-def closest(colors,color):
+
+def check_key_quit(key):
+    if keyboard.is_pressed(key):
+        sys.exit()
+
+def closest(colors, color):
     colors = np.array(colors)
     color = np.array(color)
-    distances = np.sqrt(np.sum((colors-color)**2,axis=1))
-    index_of_smallest = np.where(distances==np.amin(distances))
+    distances = np.sqrt(np.sum((colors - color) ** 2, axis=1))
+    index_of_smallest = np.where(distances == np.amin(distances))
     smallest_distance = colors[index_of_smallest]
-    s_color = str(smallest_distance).replace("[","").replace("]","").replace("  "," ")
-    s_color = s_color.split(" ")
-    s_list = []
-    for i in range(len(s_color)):
-        if s_color[i] != "":
-            s_list.append(s_color[i])
-    res = int(s_list[0]) + int(s_list[1]) + int(s_list[2])
-    return res
-    
+    smallest_distance = smallest_distance[0]  # Get the first color if multiple smallest distances
+    smallest_distance = smallest_distance[:3]  # Keep only the first 3 elements (R, G, B)
+    s = sum(smallest_distance)
+    return s
+
 def download_and_resize_pic(pic,m):
     img_data = requests.get(pic).content
     with open('image_name.jpg', 'wb') as handler:
@@ -122,6 +126,7 @@ def closest_number_from_list(num,l):
             return(num_list[1])
 
 def click_on_colour(num,pic_x,pic_y,klick):
+    check_key_quit("x")
     X = 477
     Y = 274
     c = Kolor()
@@ -135,36 +140,37 @@ def click_on_colour(num,pic_x,pic_y,klick):
                 idx_x = 586 + int(23/2) * (i)
                 if klick == 1:
                     time.sleep(0.5)
-                    pyautogui.click(x=X+pic_x ,y=Y+pic_y)
+                    pyautogui.click(x=X+pic_x+20 ,y=Y+pic_y)
                 
-                    pyautogui.click(x=idx_x, y=idx_y)
+                    pyautogui.click(x=idx_x - 15, y=idx_y)
                 elif klick == 2:
                     pyautogui.PAUSE = 0.005
-                    pyautogui.click(x=idx_x, y=idx_y)
+                    pyautogui.click(x=idx_x+20, y=idx_y+30)
                     
                 else:
                     pyautogui.PAUSE = 0.005
-                    pyautogui.click(x=X+pic_x ,y=Y+pic_y)
+                    pyautogui.click(x=X+pic_x+20 ,y=Y+pic_y+30)
                 
             else:
                 idx_y = 915
                 idx_x = 586 + (int(23/2) * (i))
                 if klick == 1:
                     time.sleep(0.5)
-                    pyautogui.click(x=X+pic_x ,y=Y+pic_y)
-                    pyautogui.click(x=idx_x, y=idx_y)
+                    pyautogui.click(x=X+pic_x+20 ,y=Y+pic_y)
+                    pyautogui.click(x=idx_x - 15, y=idx_y)
                 elif klick == 2:
                     pyautogui.PAUSE = 0.005      
-                    pyautogui.click(x=idx_x, y=idx_y)
+                    pyautogui.click(x=idx_x+20, y=idx_y+30)
                 
                 else:
                     pyautogui.PAUSE = 0.005 
-                    pyautogui.click(x=X+pic_x ,y=Y+pic_y)
+                    pyautogui.click(x=X+pic_x+20 ,y=Y+pic_y+30)
             
             break
     
 def draw_pic(m):
-    pyautogui.click(x=1075 ,y=930)
+    #pyautogui.click(x=1075 ,y=930)
+    #time.sleep(10000)
     pic_pix = get_pixel()
     idx_x = 0
     idx_y = 0
@@ -210,9 +216,11 @@ def get_pixel():
         final_list.append(int(closest(color.color_list,pixel_values[i])))
     return(final_list)
 
+
 m = mylist()
 try:
     pic = input("Le truc a dessiner: ")
+    #pic = "https://static.wikia.nocookie.net/characters/images/e/e8/Majin_Buu.png/revision/latest?cb=20221227172116"
     download_and_resize_pic(pic,m)
     get_pixel()
     time.sleep(5)
@@ -223,4 +231,3 @@ except:
     get_pixel()
     time.sleep(5)
     draw_pic(m)
-
