@@ -14,37 +14,6 @@ class mylist:
     before = []
     idx = 0
     size = 0
-
-class Color:
-    white = [255,255,255]
-    black = [0,0,0]
-    grey = [193,193,193]
-    dark_grey = [76,76,76]
-    red = [239,19,11]
-    dark_red = [116,11,7]
-    orange = [255,113,0]
-    dark_orange = [194,56,0]
-    yellow = [255,228,0]
-    dark_yellow = [232,162,0]
-    green = [0,204,0]
-    dark_green = [0,85,16]
-    light_green = [255,145,255]
-    light_dark_green = [70,25,255]
-    
-    blue = [0,178,255]
-    dark_blue = [0,86,158]
-    big_blue = [35,31,211]
-    dark_big_blue = [14,8,101]
-    purple = [163,0,186]
-    dark_purple = [85,0,105]
-    pink = [211,124,170]
-    dark_pink = [167,85,116]
-    brown = [160,82,45]
-    dark_brown = [99,48,13]
-    color_list = [white,black,grey,dark_grey,red,dark_red,orange,dark_orange,yellow,dark_yellow,green,dark_green,dark_green,light_green,blue,dark_blue,big_blue,dark_big_blue,purple,dark_purple,pink,dark_pink,brown,dark_brown]
-    color_list_name = ["white","black","grey","dark_grey","red","dark_red","orange","dark_orange","yellow","dark_yellow","green","dark_green","light_green","light_dark_green","blue","dark_blue","big_blue","dark_big_blue","purple","dark_purple","pink","dark_pink","brown","dark_brown"]
-
-    
 Colour = tuple[int, int, int]
 
 
@@ -220,7 +189,7 @@ def draw_pic(m):
                 idx_x = 0
             idx_x = idx_x + 5
             if pic_pix[i] != 765:
-                if pic_pix[i] == one_pic[change_c]:
+                if pic_pix[i] == one_pic[change_c] and color != "white":
                     click_on_colour(color,pos,idx_x,idx_y,0)
         idx_x = 0
         idx_y = 0
@@ -258,14 +227,12 @@ m = mylist()
 try:
     pic = input("pic to draw: ")
     download_and_resize_pic(pic,m)
-    #get_pixel()
     print("prout")
     time.sleep(5)
     draw_pic(m)
 except:
     pic = "https://files.structurae.net/files/covers/doa127.jpg"
     download_and_resize_pic(pic,m)
-    #get_pixel()
     time.sleep(5)
     draw_pic(m)
 
