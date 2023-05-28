@@ -28,6 +28,9 @@ class Color:
     dark_yellow = [232,162,0]
     green = [0,204,0]
     dark_green = [0,85,16]
+    light_green = [255,145,255]
+    light_dark_green = [70,25,255]
+    
     blue = [0,178,255]
     dark_blue = [0,86,158]
     big_blue = [35,31,211]
@@ -38,39 +41,41 @@ class Color:
     dark_pink = [167,85,116]
     brown = [160,82,45]
     dark_brown = [99,48,13]
-    color_list = [white,black,grey,dark_grey,red,dark_red,orange,dark_orange,yellow,dark_yellow,green,dark_green,blue,dark_blue,big_blue,dark_big_blue,purple,dark_purple,pink,dark_pink,brown,dark_brown]
-    color_list_name = ["white","black","grey","dark_grey","red","dark_red","orange","dark_orange","yellow","dark_yellow","green","dark_green","blue","dark_blue","big_blue","dark_big_blue","purple","dark_purple","pink","dark_pink","brown","dark_brown"]
+    color_list = [white,black,grey,dark_grey,red,dark_red,orange,dark_orange,yellow,dark_yellow,green,dark_green,dark_green,light_green,blue,dark_blue,big_blue,dark_big_blue,purple,dark_purple,pink,dark_pink,brown,dark_brown]
+    color_list_name = ["white","black","grey","dark_grey","red","dark_red","orange","dark_orange","yellow","dark_yellow","green","dark_green","light_green","light_dark_green","blue","dark_blue","big_blue","dark_big_blue","purple","dark_purple","pink","dark_pink","brown","dark_brown"]
 
-
-class Kolor:
-    white = 765
-    black = 0
-    grey = 579
-    dark_grey = 228
-    red = 269
-    dark_red = 134
-    orange = 388
-    dark_orange = 250
-    yellow = 483
-    dark_yellow = 394
-    green = 204
-    dark_green = 101
-    blue = 433
-    dark_blue = 244
-    big_blue = 277
-    dark_big_blue = 123
-    purple = 349
-    dark_purple = 190
-    pink = 505
-    dark_pink = 368
-    brown = 287
-    dark_brown = 160
-    color_list = [white,black,grey,dark_grey,red,dark_red,orange,dark_orange,yellow,dark_yellow,green,dark_green,blue,dark_blue,big_blue,dark_big_blue,purple,dark_purple,pink,dark_pink,brown,dark_brown]
-    color_list_name = ["white","black","grey","dark_grey","red","dark_red","orange","dark_orange","yellow","dark_yellow","green","dark_green","blue","dark_blue","big_blue","dark_big_blue","purple","dark_purple","pink","dark_pink","brown","dark_brown"]
-
+    
 Colour = tuple[int, int, int]
 
-tuple_colours: dict[str, Colour] = {'white': (255, 255, 255), 'black': (0, 0, 0), 'grey': (193, 193, 193), 'dark_grey': (76, 76, 76), 'red': (239, 19, 11), 'dark_red': (116, 11, 7), 'orange': (255, 113, 0), 'dark_orange': (194, 56, 0), 'yellow': (255, 228, 0), 'dark_yellow': (232, 162, 0), 'green': (0, 204, 0), 'dark_green': (0, 85, 16), 'blue': (0, 178, 255), 'dark_blue': (0, 86, 158), 'big_blue': (35, 31, 211), 'dark_big_blue': (14, 8, 101), 'purple': (163, 0, 186), 'dark_purple': (85, 0, 105), 'pink': (211, 124, 170), 'dark_pink': (167, 85, 116), 'brown': (160, 82, 45), 'dark_brown': (99, 48, 13)}
+
+tuple_colours: dict[str, Colour] = {'white': (255, 255, 255), 'black': (0, 0, 0), 'grey': (193, 193, 193), 'dark_grey': (76, 76, 76), 'red': (239, 19, 11), 'dark_red': (116, 11, 7), 'orange': (255, 113, 0), 'dark_orange': (194, 56, 0), 'yellow': (255, 228, 0), 'dark_yellow': (232, 162, 0), 'green': (0, 204, 0), 'dark_green': (0, 85, 16), 'light_green': (255,145,255) , 'light_dark_green': (70,25,255), 'blue': (0, 178, 255), 'dark_blue': (0, 86, 158), 'big_blue': (35, 31, 211), 'dark_big_blue': (14, 8, 101), 'purple': (163, 0, 186), 'dark_purple': (85, 0, 105), 'pink': (211, 124, 170), 'dark_pink': (167, 85, 116), 'brown': (160, 82, 45), 'dark_brown': (99, 48, 13)}
+
+Pos = tuple[int,int]
+
+colours_pos: dict[str,Pos] = {'white': (575, 918), 
+                              'black': (575, 942), 
+                              'grey': (600, 918), 
+                              'dark_grey': (600, 942), 
+                              'red': (625,918), 
+                              'dark_red': (625,942), 
+                              'orange': (650,918), 
+                              'dark_orange': (650,942), 
+                              'yellow': (675,918), 
+                              'dark_yellow': (675,942), 
+                              'green': (700,918), 
+                              'dark_green': (700,942), 
+                              'light_green': (725,918), 
+                              'light_dark_green': (725,942), 
+                              'blue': (750, 918), 
+                              'dark_blue': (750,942), 
+                              'big_blue': (775, 918), 
+                              'dark_big_blue': (775,942), 
+                              'purple': (800, 918), 
+                              'dark_purple': (800,942), 
+                              'pink': (825,918), 
+                              'dark_pink': (825,942), 
+                              'brown': (850,918), 
+                              'dark_brown': (850,942)}
 
 def check_key_quit(key):
     if keyboard.is_pressed(key):
@@ -145,73 +150,52 @@ def closest_number_from_list(num,l):
         return(l[-1])
     else:
         if n - num_list[0] >= n - num_list[1]:
-            return(num_list[0])
+           return(num_list[0])
         else:
             return(num_list[1])
 
-def click_on_colour(num,pic_x,pic_y,klick):
+def click_on_colour(color,pos,pic_x,pic_y,klick):
     check_key_quit("x")
     X = 477
     Y = 274
-    c = Kolor()
     idx_x = 0
     idx_y = 0
+    if klick == 1:
+        time.sleep(0.5)
+        pyautogui.click(x=pos[0] , y=pos[1])
+        pyautogui.click(x=idx_x+20, y=idx_y+30)
+    elif klick == 2:
+        pyautogui.PAUSE = 0.005      
+        pyautogui.click(x=idx_x+20, y=idx_y+30)
     
-    for i in range(len(c.color_list)):
-        if c.color_list[i] == num:
-            if i % 2 != 0:
-                idx_y = 944
-                idx_x = 586 + int(23/2) * (i)
-                if klick == 1:
-                    time.sleep(0.5)
-                    pyautogui.click(x=X+pic_x+20 ,y=Y+pic_y)
-                
-                    pyautogui.click(x=idx_x - 15, y=idx_y)
-                elif klick == 2:
-                    pyautogui.PAUSE = 0.005
-                    pyautogui.click(x=idx_x+20, y=idx_y+30)
-                    
-                else:
-                    pyautogui.PAUSE = 0.005
-                    pyautogui.click(x=X+pic_x+20 ,y=Y+pic_y+30)
-                
-            else:
-                idx_y = 915
-                idx_x = 586 + (int(23/2) * (i))
-                if klick == 1:
-                    time.sleep(0.5)
-                    pyautogui.click(x=X+pic_x+20 ,y=Y+pic_y)
-                    pyautogui.click(x=idx_x - 15, y=idx_y)
-                elif klick == 2:
-                    pyautogui.PAUSE = 0.005      
-                    pyautogui.click(x=idx_x+20, y=idx_y+30)
-                
-                else:
-                    pyautogui.PAUSE = 0.005 
-                    pyautogui.click(x=X+pic_x+20 ,y=Y+pic_y+30)
-            
-            break
-    
+    else:
+        pyautogui.PAUSE = 0.005 
+        pyautogui.click(x=X+pic_x+20 ,y=Y+pic_y+30)
+        
+
 def draw_pic(m):
     #pyautogui.click(x=1075 ,y=930)
 
     pic_pix = get_pixel()
-    print("colour ")
     a_colour = print_colour_from_pic()
     a_unique_colour = list(dict.fromkeys(a_colour))
 
     # Sort the unique colors by the number of their occurrences
-    sorted_colors = sorted(a_unique_colour, key=lambda x: a_colour.count(x), reverse=True)
-
+    sorted_colors = sorted(a_unique_colour, key=lambda x: a_colour.count(x))
+    
     for col in sorted_colors:
-        count = a_colour.count(col)
-        print("col:", col, count)
+       count = a_colour.count(col)
+       print("col:", col, count)
 
     #print(a)
     idx_x = 0
     idx_y = 0
     
     one_pic = list(dict.fromkeys(pic_pix))
+    #print(sorted_colors)
+    #print(one_pic)
+    #print(pic_pix)
+    
     count_l = []
     idx = 0
     change_c = 0
@@ -219,12 +203,17 @@ def draw_pic(m):
         count_l.append(pic_pix.count(one_pic[i]))
     count_l, one_pic = zip(*sorted(zip(count_l, one_pic)))
     once = 0
-    click_on_colour(one_pic[change_c],0,0,2)
-
-    for j in range(len(one_pic)):
+    #click_on_colour(one_pic[change_c],0,0,2)
+    #for color, pos in colours_pos.items():
+    for j in range(len(sorted_colors)):
         for i in range(len(pic_pix)):
+            color = sorted_colors[j]
+            pos = colours_pos[sorted_colors[j]]
+#            print(color,pos)
+    
+            
             if once == 0:
-                click_on_colour(one_pic[change_c],idx_x,idx_y,1)
+                click_on_colour(color,pos,idx_x,idx_y,1)
                 once = 1 
             if i % m.size == 0:
                 idx_y = idx_y + 5
@@ -232,7 +221,7 @@ def draw_pic(m):
             idx_x = idx_x + 5
             if pic_pix[i] != 765:
                 if pic_pix[i] == one_pic[change_c]:
-                    click_on_colour(one_pic[change_c],idx_x,idx_y,0)
+                    click_on_colour(color,pos,idx_x,idx_y,0)
         idx_x = 0
         idx_y = 0
         once = 0
@@ -243,8 +232,6 @@ def better_closest(c: Colour) -> str:
 
 def adjust_pixels(img: Image.Image) -> list[str]:
     pixels: list[Colour] = list(img.getdata())  # type: ignore
-    print(list(img.getdata()))
-    write_into_file("ok.txt",list(img.getdata()))
     return [better_closest(p) for p in pixels]
 
 def get_pixel():
@@ -266,12 +253,10 @@ def print_colour_from_pic():
     return (new_pixel_names)
 
 m = mylist()
+
+
 try:
-    #pic = input("pic to draw: ")
-    pic = "https://cdn.vox-cdn.com/thumbor/sW5h16et1R3au8ZLVjkcAbcXNi8=/0x0:3151x2048/2000x1333/filters:focal(1575x1024:1576x1025)/cdn.vox-cdn.com/uploads/chorus_asset/file/15844974/netflixlogo.0.0.1466448626.png"
-    #pic = "https://static.wikia.nocookie.net/characters/images/e/e8/Majin_Buu.png/revision/latest?cb=20221227172116"
-    #"pic = "https://skribbl.io/img/logo.gif"
-    #pic = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Facebook_logo_%28square%29.png/800px-Facebook_logo_%28square%29.png"
+    pic = input("pic to draw: ")
     download_and_resize_pic(pic,m)
     #get_pixel()
     print("prout")
