@@ -7,6 +7,7 @@ import numpy as np
 import keyboard
 from typing import Dict, Callable
 import math
+from colormath.color_diff import delta_e_cie1976 as cie76
 
 SIZE = 150
 
@@ -14,6 +15,8 @@ class mylist:
     before = []
     idx = 0
     size = 0
+
+    
 Colour = tuple[int, int, int]
 
 
@@ -50,78 +53,41 @@ def check_key_quit(key):
     if keyboard.is_pressed(key):
         sys.exit()
 
-def print_file(path):
-    f = open(path, 'r')
-    content = f.read()
-    return(content)
-    f.close()
-
-def write_into_file(path,x):
-    f = open(path, "w")
-    f.write(str(x))
-    f.close
-
-def closest(dict_colors, color):
-    dict_colors = np.array(dict_colors)
-    color = np.array(color)
-    distances = np.array([math.dist(c, color) for c in dict_colors])  # Calculate distances using math.dist
-    index_of_smallest = np.where(distances == np.amin(distances))
-    smallest_distance = dict_colors[index_of_smallest]
-    smallest_distance = smallest_distance[0]  # Get the first color if multiple smallest distances
-    smallest_distance = smallest_distance[:3]  # Keep only the first 3 elements (R, G, B)
-    s = sum(smallest_distance)
-    return s
-
-def closest(dict_colors, color):
-    colors = np.array(list(dict_colors.values()))
-    color = np.array(color)
-    distances = np.array([math.dist(c, color) for c in colors])  # Calculate distances using math.dist
-    index_of_smallest = np.where(distances == np.amin(distances))
-    closest_color_key = list(dict_colors.keys())[index_of_smallest[0][0]]  # Get the key for the closest color
-    closest_color = dict_colors[closest_color_key]
-    closest_color = closest_color[:3]  # Keep only the first 3 elements (R, G, B)
-    s = sum(closest_color)
-    return s
-
 def download_and_resize_pic(pic,m):
     img_data = requests.get(pic).content
     with open('image_name.jpg', 'wb') as handler:
         handler.write(img_data)
     image = Image.open('image_name.jpg')
     x , y = image.size
-    if x > y:
-        res = x /SIZE
-    else:
-        res = y/SIZE
-    m.size = int(x/res)
-    
-    if int(y/res) < 145 and int(x/res) < 145 or int(x/res) < 145 and int(y/res) < 145:
-        new_image = image.resize((int(x/res),int(y/res)))
-    else:
-        new_image = image.resize((int(int(x/res)*0.75),int(int(y/res)*0.75)))
-        m.size = int(m.size*0.75)
-    new_image.convert('RGB').save('picture.jpg')
-
-def closest_number_from_list(num,l):
-    list_of_num = l
-    list_of_num.sort()
-    n = num
-    idx = 0
-    num_list = []
-
-    for i in range(len(list_of_num)):
-        if n < l[i]:
-            num_list.append(list_of_num[i])
-            num_list.append(list_of_num[i-1])
-            idx = idx + 1
-            break
-    if idx == 0:
-        return(l[-1])
-    else:
-        if n - num_list[0] >= n - num_list[1]:
-           return(num_list[0])
+    SIZE_X = 150
+    SIZE_Y = 150
+    res_x = 0
+    res_y = 0
+    factor = 0
+    short_pic = False
+    if x > SIZE_X or y > SIZE_Y:
+        if x > y:
+            factor = x / SIZE_X
         else:
-            return(num_list[1])
+            factor = y / SIZE_Y
+        res_x = int(x / factor)
+        res_y = int(y / factor)
+        
+    else:
+        short_pic = True
+    
+    if short_pic == True:
+        if x > y:
+            factor = SIZE_X / x
+        else:
+            factor = SIZE_Y / y
+        res_x = int(x * factor)
+        res_y = int(y * factor)
+        
+    m.size = int(res_x)
+    print("X: " , x , " Y: " , y , " LIGNE: " , m.size, " X FINAL: " , res_x , " Y FINAL: " , res_y)
+    new_image = image.resize((res_x,res_y))
+    new_image.convert('RGB').save('picture.jpg')
 
 def click_on_colour(color,pos,pic_x,pic_y,klick):
     check_key_quit("x")
@@ -134,60 +100,48 @@ def click_on_colour(color,pos,pic_x,pic_y,klick):
         pyautogui.click(x=pos[0] , y=pos[1])
         pyautogui.click(x=idx_x+20, y=idx_y+30)
     elif klick == 2:
-        pyautogui.PAUSE = 0.005      
+        pyautogui.PAUSE = 0.00000001     
         pyautogui.click(x=idx_x+20, y=idx_y+30)
     
     else:
-        pyautogui.PAUSE = 0.005 
+        pyautogui.PAUSE = 0.00000001
         pyautogui.click(x=X+pic_x+20 ,y=Y+pic_y+30)
         
 
 def draw_pic(m):
-    #pyautogui.click(x=1075 ,y=930)
-
     pic_pix = get_pixel()
     a_colour = print_colour_from_pic()
     a_unique_colour = list(dict.fromkeys(a_colour))
-
-    # Sort the unique colors by the number of their occurrences
     sorted_colors = sorted(a_unique_colour, key=lambda x: a_colour.count(x))
     
     for col in sorted_colors:
        count = a_colour.count(col)
        print("col:", col, count)
-
-    #print(a)
+    
     idx_x = 0
     idx_y = 0
     
     one_pic = list(dict.fromkeys(pic_pix))
-    #print(sorted_colors)
-    #print(one_pic)
-    #print(pic_pix)
-    
     count_l = []
     idx = 0
     change_c = 0
     for i in range(len(one_pic)):
         count_l.append(pic_pix.count(one_pic[i]))
     count_l, one_pic = zip(*sorted(zip(count_l, one_pic)))
+    
     once = 0
-    #click_on_colour(one_pic[change_c],0,0,2)
-    #for color, pos in colours_pos.items():
+    pixel_size = 5
     for j in range(len(sorted_colors)):
         for i in range(len(pic_pix)):
             color = sorted_colors[j]
             pos = colours_pos[sorted_colors[j]]
-#            print(color,pos)
-    
-            
             if once == 0:
                 click_on_colour(color,pos,idx_x,idx_y,1)
                 once = 1 
             if i % m.size == 0:
-                idx_y = idx_y + 5
+                idx_y = idx_y + pixel_size
                 idx_x = 0
-            idx_x = idx_x + 5
+            idx_x = idx_x + pixel_size
             if pic_pix[i] != 765:
                 if pic_pix[i] == one_pic[change_c] and color != "white":
                     click_on_colour(color,pos,idx_x,idx_y,0)
@@ -195,6 +149,7 @@ def draw_pic(m):
         idx_y = 0
         once = 0
         change_c = change_c + 1
+
 
 def better_closest(c: Colour) -> str:
     return min(tuple_colours, key=lambda k: math.dist(c, tuple_colours[k]))
@@ -223,7 +178,6 @@ def print_colour_from_pic():
 
 m = mylist()
 
-
 try:
     pic = input("pic to draw: ")
     download_and_resize_pic(pic,m)
@@ -235,4 +189,3 @@ except:
     download_and_resize_pic(pic,m)
     time.sleep(5)
     draw_pic(m)
-
