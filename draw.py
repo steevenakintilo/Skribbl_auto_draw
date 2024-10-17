@@ -9,7 +9,7 @@ from typing import Dict, Callable
 import math
 from colormath.color_diff import delta_e_cie1976 as cie76
 
-SIZE = 150
+SIZEG = 110
 
 class mylist:
     before = []
@@ -59,8 +59,8 @@ def download_and_resize_pic(pic,m):
         handler.write(img_data)
     image = Image.open('image_name.jpg')
     x , y = image.size
-    SIZE_X = 150
-    SIZE_Y = 150
+    SIZE_X = SIZEG
+    SIZE_Y = SIZEG
     res_x = 0
     res_y = 0
     factor = 0
@@ -184,7 +184,9 @@ try:
     print("prout")
     time.sleep(5)
     draw_pic(m)
+    print("popo")
 except:
+    print("caca")
     pic = "https://files.structurae.net/files/covers/doa127.jpg"
     download_and_resize_pic(pic,m)
     time.sleep(5)
